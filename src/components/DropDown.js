@@ -44,12 +44,11 @@ function DropDown() {
 
   //tiene traccia dello stato delle checkbox e mostra se sono chekkate o meno
   const statusCheckbox = useCallback(
-    (targetGroup, indexCheckBokClicked, indexTarget) => {
-      console.log("Renderizzo");
+    (targetGroup, indexCheckBoxClicked, indexGroup) => {
       let stateCopy = [...buttonState];
       targetGroup.values.map((valuesCheckbox, index) => {
-        if (valuesCheckbox.name === targetGroup.values[indexCheckBokClicked].name) {
-          stateCopy[indexTarget].values[index].checked = !stateCopy[indexTarget].values[index].checked;
+        if (valuesCheckbox.name === targetGroup.values[indexCheckBoxClicked].name) {
+          stateCopy[indexGroup].values[index].checked = !stateCopy[indexGroup].values[index].checked;
           return setButtonState(stateCopy);
         } else return "";
       });
@@ -84,8 +83,8 @@ function DropDown() {
 
   //doppia chiamata per le funzioni: spunta le checkbox che vengono cliccate e in più controlla
   //se tutte sono cliccate, interagendo con lo stato del select all
-  function doubleCall(targetGroup, indexCheckBokClicked, indexTarget) {
-    statusCheckbox(targetGroup, indexCheckBokClicked, indexTarget);
+  function doubleCall(targetGroup, indexCheckBoxClicked, indexGroup) {
+    statusCheckbox(targetGroup, indexCheckBoxClicked, indexGroup);
     areAllChecked();
   }
 
@@ -113,33 +112,31 @@ function DropDown() {
               </label>
               <OptionsClicked />
               <div className="buttons">
-                {buttonState.map((button, i) => {
+                {buttonState.map((button, indexGroup) => {
                   return (
-                    <div className="buttons" key={i}>
+                    <div className="buttons" key={indexGroup}>
                       <Button
-                        objectIndex={i}
+                        objectIndex={indexGroup}
                         visible={button.open}
                         name={button.groupName}
                         changeButtonState={() => {
-                          changeButtonState(i);
+                          changeButtonState(indexGroup);
                         }}
                       />
-                      {buttonState.map((internalObj, index) => {
-                        if (internalObj.open && internalObj.groupName === button.groupName) {
-                          return internalObj.values.map((element, j) => {
+                      {button.open === true
+                        ? button.values.map((checkboxValues, indexCheckBox) => {
                             return (
-                              <div key={j}>
+                              <div key={indexCheckBox}>
                                 <CheckBox
-                                  checked={element.checked}
-                                  onChange={(e) => doubleCall(internalObj, j, index)}
-                                  name={element.name}
-                                  value={element.value}
+                                  checked={checkboxValues.checked}
+                                  onChange={(e) => doubleCall(button, indexCheckBox, indexGroup)}
+                                  name={checkboxValues.name}
+                                  value={checkboxValues.value}
                                 />
                               </div>
                             );
-                          });
-                        } else return "";
-                      })}
+                          })
+                        : ""}
                     </div>
                   );
                 })}

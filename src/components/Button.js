@@ -18,26 +18,21 @@ function Button({ name, changeButtonState, visible, objectIndex }) {
 
   //Controlla che i checkbox dello stesso gruppo siano tutti checked o meno, illuminando
   //o meno il pulsante subselect
-  const isEveryClicked = (currentValue) => currentValue === true;
   const groupCheck = useCallback(() => {
+    const isEveryClicked = (currentValue) => currentValue === true;
     const stateCopy = [...buttonState];
-
     const everyClicked = Object.values(
       stateCopy[objectIndex].values.map((el) => {
         return el.checked;
       })
     ).every(isEveryClicked);
 
-    if (everyClicked) {
-      setAllGroupCheck(true);
-    } else {
-      setAllGroupCheck(false);
-    }
+    everyClicked ? setAllGroupCheck(true) : setAllGroupCheck(false);
   }, [buttonState, objectIndex]);
 
   useEffect(() => {
     groupCheck();
-  }, [allGroupCheck, buttonState]);
+  }, [buttonState]);
 
   return (
     <>
