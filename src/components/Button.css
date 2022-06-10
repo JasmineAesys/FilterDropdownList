@@ -2,8 +2,9 @@
   background-color: grey;
   border-radius: 10px;
   display: flex;
-  padding: 5%;
-  margin-top: 15px;
+  padding: 4%;
+  margin: 15px 0;
   flex-direction: column;
   width: 100%;
+  align-items: center;
 }

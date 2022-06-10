@@ -1,4 +1,4 @@
-const data = [
+export const data = [
   {
     groupName: "Group1",
     values: [
@@ -23,4 +23,11 @@ const data = [
   },
 ];
 
-export default data;
+export const subSelectMenu = [
+  {
+    groupName: "Group1",
+  },
+  {
+    groupName: "Group2",
+  },
+];
