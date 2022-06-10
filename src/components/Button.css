@@ -1,0 +1,9 @@
+.buttons_container {
+  background-color: grey;
+  border-radius: 10px;
+  display: flex;
+  padding: 5%;
+  margin-top: 15px;
+  flex-direction: column;
+  width: 100%;
+}
