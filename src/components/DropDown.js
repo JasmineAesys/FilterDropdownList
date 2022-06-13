@@ -1,8 +1,8 @@
 import React, { useState, createContext, useMemo, useCallback } from "react";
 import "./DropDown.css";
 import Button from "./Button";
-import CheckBox from "./CheckBox";
 import OptionsClicked from "./OptionsClicked";
+import _ from "lodash";
 
 export const ButtonState = createContext();
 export const StatusCheckBoxChechAll = createContext();
@@ -20,7 +20,7 @@ function DropDown({ data }) {
           values: el.values.map((item) => ({ ...item, checked: false })),
         };
       }),
-    []
+    [data]
   );
   const [showgroups, setShowgroups] = useState(true); //stato del button primario a tendina aperto o chiuso
   const [buttonState, setButtonState] = useState(initializeMemoizeData); //struttura dati di supporto
@@ -30,7 +30,7 @@ function DropDown({ data }) {
   const handleSelectAll = useCallback(
     (e) => {
       setButtonAllChecked(e.target.checked);
-      const stateCopy = [...buttonState];
+      const stateCopy = _.clone(buttonState);
       buttonState.forEach((el, indexButtonState) => {
         el.values.forEach(
           (elinterno, indexValues) => (stateCopy[indexButtonState].values[indexValues].checked = e.target.checked)
@@ -62,26 +62,10 @@ function DropDown({ data }) {
                   {buttonAllChecked ? "Decheck All" : "Check All"}
                 </label>
                 <OptionsClicked />
-
                 {buttonState.map((button, indexGroup) => {
                   return (
                     <div className="buttons" key={indexGroup}>
-                      <Button objectIndex={indexGroup} name={button.groupName} />
-                      {button.open === true
-                        ? button.values.map((checkboxValues, indexCheckBox) => {
-                            return (
-                              <div key={indexCheckBox}>
-                                <CheckBox
-                                  indexCheckBox={indexCheckBox}
-                                  indexGroup={indexGroup}
-                                  name={checkboxValues.name}
-                                  value={checkboxValues.value}
-                                  checked={checkboxValues.checked}
-                                />
-                              </div>
-                            );
-                          })
-                        : ""}
+                      <Button objectIndex={indexGroup} name={button.groupName} open={button.open} />
                     </div>
                   );
                 })}
